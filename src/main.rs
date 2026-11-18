@@ -50,6 +50,32 @@ fn get_ollama_exe() -> std::path::PathBuf {
     }
 }
 
+#[link(name = "winmm")]
+extern "system" {
+    fn PlaySoundW(pszSound: *const u16, hmod: *mut std::ffi::c_void, fdwSound: u32) -> i32;
+}
+
+const SND_ASYNC: u32 = 0x0001;
+const SND_FILENAME: u32 = 0x00020000;
+const SND_NODEFAULT: u32 = 0x0002;
+
+fn play_sound_for_mode(mode: u8) {
+    let sound_path = if mode == MODE_GAMER {
+        get_scripts_dir().join("hadouken.wav")
+    } else {
+        get_scripts_dir().join("theoffice.wav")
+    };
+
+    if sound_path.exists() {
+        if let Some(path_str) = sound_path.to_str() {
+            let wide = to_wide(path_str);
+            unsafe {
+                PlaySoundW(wide.as_ptr(), null_mut(), SND_ASYNC | SND_FILENAME | SND_NODEFAULT);
+            }
+        }
+    }
+}
+
 // Hide console window when spawning helper processes
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
@@ -283,6 +309,8 @@ unsafe fn toggle_mode(forced: Option<u8>) {
     if current == new_mode && forced.is_some() {
         return;
     }
+
+    play_sound_for_mode(new_mode);
 
     CURRENT_MODE.store(new_mode, Ordering::SeqCst);
     update_tray_icon(true);
