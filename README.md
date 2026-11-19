@@ -50,6 +50,11 @@ A lightweight, zero-latency toggle that seamlessly flips your Windows environmen
   1. **System Tray Icon**: Left-click for instant toggle; right-click for full menu.
   2. **Desktop Shortcut**: Double-click the high-res desktop shortcut.
   3. **Rainmeter HUD Widget**: Clean desktop widget showing live status.
+* **⚽ In-Game Instant Replay & WhatsApp Auto-Delivery**:
+  * Triggered instantly from your gamepad (**L3 + R3** or **Back + Start**) across XInput slots 0..3.
+  * **Zero-drift parallel capture**: Decoupled video (DirectX DDA / NVENC 60 FPS) and audio (loopback) recording pipelines eliminate DirectShow frame drops.
+  * **Transparent Floating HUD**: Minimalist colorkey overlay with pulsating record dot, live 30s countdown, and WhatsApp delivery indicators.
+  * **Automatic WhatsApp Upload**: Directly sends the 30-second replay clip to your WhatsApp number via API in seconds.
 * **🛡️ Zero Overhead**: Uses native Windows APIs (`windows-sys`), no heavy frameworks, no electron, zero telemetry.
 
 ---

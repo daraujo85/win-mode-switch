@@ -16,6 +16,9 @@ use windows_sys::Win32::UI::Shell::{
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::*;
 
+mod hud;
+mod replay;
+
 const WM_TRAY_CALLBACK: u32 = WM_APP + 1;
 const ID_TRAY_ICON: u32 = 1001;
 
@@ -471,6 +474,10 @@ fn main() {
         nid.szTip = to_wide_buf::<128>(tip);
 
         Shell_NotifyIconW(NIM_ADD, &nid);
+
+        // Start background replay monitor (L3+R3)
+        hud::start_hud_window();
+        replay::start_replay_monitor();
 
         // Win32 Message Loop
         let mut msg: MSG = std::mem::zeroed();
